@@ -1,6 +1,5 @@
 import React from 'react';
-import { Check, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Check } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { usePropertyStore } from '../../store/usePropertyStore';
 import { PropertyInfoForm } from '../forms/PropertyInfoForm';
@@ -85,7 +84,7 @@ export const steps: Step[] = [
 ];
 
 export const MultiStepForm: React.FC = () => {
-  const { currentStep, completedSteps, setCurrentStep, goToNextStep, goToPreviousStep } = usePropertyStore();
+  const { currentStep, completedSteps, setCurrentStep } = usePropertyStore();
   const CurrentStepComponent = steps[currentStep].component;
 
   return (
@@ -151,46 +150,7 @@ export const MultiStepForm: React.FC = () => {
         </div>
       </div>
 
-      {/* Navigation */}
-      <div className="sticky bottom-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center max-w-4xl mx-auto">
-            <Button
-              variant="outline"
-              onClick={goToPreviousStep}
-              disabled={currentStep === 0}
-              className="flex items-center gap-2"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              Previous
-            </Button>
-            
-            <div className="flex gap-2">
-              {currentStep === steps.length - 1 ? (
-                <>
-                  <Button variant="outline">
-                    Export to PDF
-                  </Button>
-                  <Button variant="outline">
-                    Export to Sheets
-                  </Button>
-                  <Button className="gradient-primary text-white">
-                    Save Project
-                  </Button>
-                </>
-              ) : (
-                <Button
-                  onClick={goToNextStep}
-                  className="flex items-center gap-2 gradient-primary text-white"
-                >
-                  Next
-                  <ChevronRight className="w-4 h-4" />
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+      
     </div>
   );
 };

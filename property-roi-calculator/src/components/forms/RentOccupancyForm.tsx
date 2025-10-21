@@ -11,7 +11,7 @@ import { Home, Percent, TrendingUp, DollarSign } from 'lucide-react';
 import type { RentOccupancy } from '../../types/property';
 
 export const RentOccupancyForm: React.FC = () => {
-  const { analysis, updateRentOccupancy, goToNextStep } = usePropertyStore();
+  const { analysis, updateRentOccupancy, goToNextStep, goToPreviousStep } = usePropertyStore();
   
   const {
     register,
@@ -144,10 +144,9 @@ export const RentOccupancyForm: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex justify-end pt-4">
-            <Button type="submit" className="gradient-primary text-white">
-              Save and Continue
-            </Button>
+          <div className="flex justify-between pt-4">
+            <Button type="button" variant="outline" onClick={goToPreviousStep}>Back</Button>
+            <Button type="submit" className="gradient-primary text-white">Save and Continue</Button>
           </div>
         </CardContent>
       </Card>

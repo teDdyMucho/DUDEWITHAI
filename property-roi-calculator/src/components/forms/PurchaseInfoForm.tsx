@@ -9,7 +9,7 @@ import { FileText } from 'lucide-react';
 import type { PurchaseInformation } from '../../types/property';
 
 export const PurchaseInfoForm: React.FC = () => {
-  const { analysis, updatePurchaseInfo, goToNextStep } = usePropertyStore();
+  const { analysis, updatePurchaseInfo, goToNextStep, goToPreviousStep } = usePropertyStore();
 
   const { register, handleSubmit, watch } = useForm<PurchaseInformation>({
     defaultValues: analysis.purchaseInfo || {
@@ -108,7 +108,8 @@ export const PurchaseInfoForm: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex justify-end pt-2">
+          <div className="flex justify-between pt-2">
+            <Button type="button" variant="outline" onClick={goToPreviousStep}>Back</Button>
             <Button type="submit" className="gradient-primary text-white">Save and Continue</Button>
           </div>
         </CardContent>

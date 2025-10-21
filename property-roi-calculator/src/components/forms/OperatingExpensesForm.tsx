@@ -11,7 +11,7 @@ import { Receipt, Shield, Wrench, Briefcase, Scale, Fuel, Zap, Droplets, Leaf, R
 import type { MonthlyOperatingExpenses } from '../../types/property';
 
 export const OperatingExpensesForm: React.FC = () => {
-  const { analysis, updateOperatingExpenses, goToNextStep } = usePropertyStore();
+  const { analysis, updateOperatingExpenses, goToNextStep, goToPreviousStep } = usePropertyStore();
   
   const {
     register,
@@ -283,10 +283,9 @@ export const OperatingExpensesForm: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex justify-end pt-4">
-            <Button type="submit" className="gradient-primary text-white">
-              Save and Continue
-            </Button>
+          <div className="flex justify-between pt-4">
+            <Button type="button" variant="outline" onClick={goToPreviousStep}>Back</Button>
+            <Button type="submit" className="gradient-primary text-white">Save and Continue</Button>
           </div>
         </CardContent>
       </Card>

@@ -2,17 +2,12 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { usePropertyStore } from '../../store/usePropertyStore';
-import { Download, FileText, Link as LinkIcon } from 'lucide-react';
-import { exportAsPDF, copyGoogleTemplate } from '../../services/export';
+import { Download } from 'lucide-react';
 
 export const SummaryDashboard: React.FC = () => {
   const { analysis, calculateDSCR, calculateROI } = usePropertyStore();
   const dscr = calculateDSCR();
   const roi = calculateROI();
-
-  const onExportPDF = async () => {
-    await exportAsPDF(analysis);
-  };
 
   const onExportSheets = async () => {
     try {
@@ -26,9 +21,7 @@ export const SummaryDashboard: React.FC = () => {
     }
   };
 
-  const onCopyTemplate = async () => {
-    await copyGoogleTemplate();
-  };
+  
 
   return (
     <div className="space-y-6">
@@ -104,9 +97,7 @@ export const SummaryDashboard: React.FC = () => {
       </div>
 
       <div className="flex flex-wrap gap-2 justify-end">
-        <Button variant="outline" onClick={onCopyTemplate}><LinkIcon className="w-4 h-4 mr-2"/>Copy Sheets Template</Button>
-        <Button variant="outline" onClick={onExportSheets}><Download className="w-4 h-4 mr-2"/>Export to Sheets</Button>
-        <Button className="gradient-primary text-white" onClick={onExportPDF}><FileText className="w-4 h-4 mr-2"/>Export PDF</Button>
+        <Button className="gradient-primary text-white" onClick={onExportSheets}><Download className="w-4 h-4 mr-2"/>Export to Sheets</Button>
       </div>
     </div>
   );

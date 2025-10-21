@@ -5,9 +5,9 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { usePropertyStore } from '../../store/usePropertyStore';
 import type { MACRSCategory, MACRSItem } from '../../types/property';
-import { Plus, Trash2, Calculator } from 'lucide-react';
+import { Calculator } from 'lucide-react';
 
-const categories: MACRSCategory[] = ['27.5-year', '15-year', '7-year', '5-year', '3-year', '1-year'];
+const selectableCategories: MACRSCategory[] = ['27.5-year', '15-year', '7-year', '5-year'];
 
 // Suggested item base names by category from the n8n workflow
 const suggestedBaseNames: Record<MACRSCategory, string[]> = {
@@ -75,7 +75,7 @@ const suggestedBaseNames: Record<MACRSCategory, string[]> = {
 type SuggestedState = Record<string, { unitCost: number; quantity: number }>;
 
 export const MacrsForm: React.FC = () => {
-  const { analysis, updateCapitalExpenditures, goToNextStep } = usePropertyStore();
+  const { analysis, updateCapitalExpenditures, goToNextStep, goToPreviousStep } = usePropertyStore();
   const [selectedCategory, setSelectedCategory] = useState<MACRSCategory>('27.5-year');
   const [items, setItems] = useState<MACRSItem[]>(analysis.capitalExpenditures?.items || []);
   const [suggested, setSuggested] = useState<SuggestedState>({});
@@ -100,34 +100,35 @@ export const MacrsForm: React.FC = () => {
     });
   }, [selectedCategory]);
 
-  const addItem = () => {
-    const newItem: MACRSItem = {
-      id: crypto.randomUUID(),
-      description: '',
-      unitCost: 0,
-      quantity: 1,
-      totalCost: 0,
-      category: selectedCategory,
-    };
-    setItems(prev => [...prev, newItem]);
-  };
-
-  const updateItem = (id: string, patch: Partial<MACRSItem>) => {
-    setItems(prev => prev.map(i => {
-      if (i.id !== id) return i;
-      const next = { ...i, ...patch } as MACRSItem;
-      const qty = Number(next.quantity) || 0;
-      const unit = Number(next.unitCost) || 0;
-      next.totalCost = qty * unit;
-      return next;
-    }));
-  };
-
-  const removeItem = (id: string) => setItems(prev => prev.filter(i => i.id !== id));
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateCapitalExpenditures(items);
+    const previouslySaved = analysis.capitalExpenditures?.items || [];
+    const others = previouslySaved.filter(i => i.category !== selectedCategory);
+    const selectedOnly = items.filter(i => i.category === selectedCategory);
+
+    // Convert filled suggested inputs for the selected category into items
+    const additions: MACRSItem[] = [];
+    for (const n of suggestedBaseNames[selectedCategory] || []) {
+      const cfg = suggested[n];
+      if (!cfg) continue;
+      const unit = Number(cfg.unitCost) || 0;
+      const qty = Number(cfg.quantity) || 0;
+      if (unit > 0 && qty > 0) {
+        additions.push({
+          id: crypto.randomUUID(),
+          description: n,
+          unitCost: unit,
+          quantity: qty,
+          totalCost: unit * qty,
+          category: selectedCategory,
+        });
+      }
+    }
+
+    const merged = [...others, ...selectedOnly, ...additions];
+    updateCapitalExpenditures(merged);
     goToNextStep();
   };
 
@@ -153,7 +154,7 @@ export const MacrsForm: React.FC = () => {
                 onChange={(e) => setSelectedCategory(e.target.value as MACRSCategory)}
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               >
-                {categories.map(c => (
+                {selectableCategories.map(c => (
                   <option key={c} value={c}>{c}</option>
                 ))}
               </select>
@@ -166,46 +167,7 @@ export const MacrsForm: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex justify-between items-center">
-            <h3 className="font-semibold">Items ({selectedCategory})</h3>
-            <Button type="button" onClick={addItem} className="gradient-primary text-white">
-              <Plus className="w-4 h-4 mr-2" /> Add Item
-            </Button>
-          </div>
-
-          <div className="space-y-3">
-            {items.filter(i => i.category === selectedCategory).map(item => (
-              <div key={item.id} className="grid grid-cols-12 gap-3 p-3 border rounded-lg">
-                <div className="col-span-12 md:col-span-4 space-y-1">
-                  <Label>Description</Label>
-                  <Input value={item.description} onChange={e => updateItem(item.id, { description: e.target.value })} placeholder="e.g., Roof replacement" />
-                </div>
-                <div className="col-span-6 md:col-span-2 space-y-1">
-                  <Label>Unit Cost</Label>
-                  <Input type="number" value={item.unitCost} onChange={e => updateItem(item.id, { unitCost: Number(e.target.value) })} />
-                </div>
-                <div className="col-span-6 md:col-span-2 space-y-1">
-                  <Label>Quantity</Label>
-                  <Input type="number" value={item.quantity} onChange={e => updateItem(item.id, { quantity: Number(e.target.value) })} />
-                </div>
-                <div className="col-span-6 md:col-span-2 space-y-1">
-                  <Label>Total</Label>
-                  <div className="h-10 flex items-center px-3 rounded-md border bg-muted text-sm">
-                    ${item.totalCost.toLocaleString()}
-                  </div>
-                </div>
-                <div className="col-span-6 md:col-span-2 flex items-end justify-end">
-                  <Button type="button" variant="outline" onClick={() => removeItem(item.id)} className="text-destructive">
-                    <Trash2 className="w-4 h-4 mr-2" /> Remove
-                  </Button>
-                </div>
-              </div>
-            ))}
-
-            {items.filter(i => i.category === selectedCategory).length === 0 && (
-              <p className="text-sm text-muted-foreground">No items yet in {selectedCategory}. Add your first item.</p>
-            )}
-          </div>
+          
 
           {/* Suggested items based on n8n workflow fields */}
           {suggestedBaseNames[selectedCategory] && suggestedBaseNames[selectedCategory].length > 0 && (
@@ -254,7 +216,8 @@ export const MacrsForm: React.FC = () => {
             </div>
           )}
 
-          <div className="flex justify-end pt-2">
+          <div className="flex justify-between pt-2">
+            <Button type="button" variant="outline" onClick={goToPreviousStep}>Back</Button>
             <Button type="submit" className="gradient-primary text-white">Save and Continue</Button>
           </div>
         </CardContent>

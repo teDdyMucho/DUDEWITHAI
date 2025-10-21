@@ -7,7 +7,7 @@ import { Label } from '../ui/label';
 import { Button } from '../ui/button';
 
 export const PurchasePriceForm: React.FC = () => {
-  const { analysis, updateContingency, goToNextStep } = usePropertyStore();
+  const { analysis, updateContingency, goToNextStep, goToPreviousStep } = usePropertyStore();
   const { register, handleSubmit } = useForm<{ purchasePrice: number }>({
     defaultValues: { purchasePrice: analysis.contingency?.purchasePrice || 0 },
   });
@@ -32,7 +32,8 @@ export const PurchasePriceForm: React.FC = () => {
               <Input id="purchasePrice" type="number" step="100" {...register('purchasePrice', { valueAsNumber: true })} className="pl-8" />
             </div>
           </div>
-          <div className="flex justify-end pt-2">
+          <div className="flex justify-between pt-2">
+            <Button type="button" variant="outline" onClick={goToPreviousStep}>Back</Button>
             <Button type="submit" className="gradient-primary text-white">Save and Continue</Button>
           </div>
         </CardContent>

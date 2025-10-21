@@ -5,11 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
-import { Percent, DollarSign } from 'lucide-react';
+ 
 import type { ContingencyPurchase } from '../../types/property';
 
 export const ContingencyForm: React.FC = () => {
-  const { analysis, updateContingency, goToNextStep } = usePropertyStore();
+  const { analysis, updateContingency, goToNextStep, goToPreviousStep } = usePropertyStore();
   const { register, handleSubmit, watch } = useForm<ContingencyPurchase>({
     defaultValues: analysis.contingency || {
       contingencyPercent: 5,
@@ -65,7 +65,8 @@ export const ContingencyForm: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex justify-end pt-2">
+          <div className="flex justify-between pt-2">
+            <Button type="button" variant="outline" onClick={goToPreviousStep}>Back</Button>
             <Button type="submit" className="gradient-primary text-white">Save and Continue</Button>
           </div>
         </CardContent>
