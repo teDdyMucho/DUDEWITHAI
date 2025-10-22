@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
-import { Home, Percent, TrendingUp, DollarSign } from 'lucide-react';
+import { Home, Percent, DollarSign } from 'lucide-react';
 import type { RentOccupancy } from '../../types/property';
 
 export const RentOccupancyForm: React.FC = () => {
@@ -23,7 +23,6 @@ export const RentOccupancyForm: React.FC = () => {
     defaultValues: analysis.rentOccupancy || {
       monthlyRent: 2500,
       occupancyRate: 95,
-      annualRentIncrease: 3,
     },
   });
 
@@ -97,36 +96,12 @@ export const RentOccupancyForm: React.FC = () => {
                 Expected average occupancy throughout the year
               </p>
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="annualRentIncrease" className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4" />
-                Annual Rent Increase
-              </Label>
-              <div className="relative">
-                <Input
-                  id="annualRentIncrease"
-                  type="number"
-                  step="0.5"
-                  {...register('annualRentIncrease', { valueAsNumber: true })}
-                  placeholder="3"
-                  className={errors.annualRentIncrease ? 'border-destructive pr-8' : 'pr-8'}
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">%</span>
-              </div>
-              {errors.annualRentIncrease && (
-                <p className="text-sm text-destructive">{errors.annualRentIncrease.message}</p>
-              )}
-              <p className="text-xs text-muted-foreground">
-                Expected yearly rent growth rate
-              </p>
-            </div>
           </div>
 
           {/* Income Projections */}
           <div className="mt-6 p-4 bg-muted rounded-lg space-y-3">
             <h3 className="font-semibold text-sm">Income Projections</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
               <div>
                 <p className="text-muted-foreground">Effective Monthly Rent</p>
                 <p className="text-xl font-semibold">${effectiveMonthlyRent.toFixed(2)}</p>
@@ -134,12 +109,6 @@ export const RentOccupancyForm: React.FC = () => {
               <div>
                 <p className="text-muted-foreground">Annual Rental Income</p>
                 <p className="text-xl font-semibold">${annualRent.toLocaleString()}</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground">5-Year Projected Rent</p>
-                <p className="text-xl font-semibold">
-                  ${(watchedValues.monthlyRent * Math.pow(1 + (watchedValues.annualRentIncrease || 0) / 100, 5)).toFixed(0)}/mo
-                </p>
               </div>
             </div>
           </div>

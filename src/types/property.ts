@@ -22,7 +22,6 @@ export interface MortgageInformation {
 export interface RentOccupancy {
   monthlyRent: number;
   occupancyRate: number;
-  annualRentIncrease: number;
   effectiveMonthlyRent?: number;
 }
 
@@ -75,7 +74,6 @@ export interface PurchaseInformation {
 export interface ContingencyPurchase {
   contingencyPercent: number;
   purchasePrice: number;
-  afterRepairValue: number;
   contingencyAmount?: number;
 }
 
@@ -83,7 +81,6 @@ export interface AppreciationInputs {
   annualAppreciationRate: number;
   annualRentGrowthRate: number;
   annualExpenseIncreaseRate: number;
-  holdingPeriodYears: number;
 }
 
 export interface DSCRCalculation {

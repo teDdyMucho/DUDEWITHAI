@@ -33,7 +33,6 @@ export const SummaryDashboard: React.FC = () => {
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
             <div className="flex justify-between"><span>Purchase Price</span><span className="font-semibold">${analysis.contingency?.purchasePrice?.toLocaleString() || 0}</span></div>
-            <div className="flex justify-between"><span>ARV</span><span className="font-semibold">${analysis.contingency?.afterRepairValue?.toLocaleString() || 0}</span></div>
             <div className="flex justify-between"><span>Acquisition Costs</span><span className="font-semibold">${analysis.purchaseInfo?.totalAcquisitionCost?.toLocaleString() || 0}</span></div>
           </CardContent>
         </Card>

@@ -22,7 +22,6 @@ export const mortgageInfoSchema = z.object({
 export const rentOccupancySchema = z.object({
   monthlyRent: z.number().min(0, 'Monthly rent must be positive'),
   occupancyRate: z.number().min(0).max(100, 'Occupancy rate must be between 0 and 100'),
-  annualRentIncrease: z.number().min(0).max(20, 'Rent increase must be between 0 and 20%'),
 });
 
 export const operatingExpensesSchema = z.object({
@@ -63,12 +62,10 @@ export const purchaseInfoSchema = z.object({
 export const contingencySchema = z.object({
   contingencyPercent: z.number().min(0).max(50, 'Contingency must be between 0 and 50%'),
   purchasePrice: z.number().min(0, 'Purchase price must be positive'),
-  afterRepairValue: z.number().min(0, 'ARV must be positive'),
 });
 
 export const appreciationSchema = z.object({
   annualAppreciationRate: z.number().min(-10).max(30, 'Must be between -10% and 30%'),
   annualRentGrowthRate: z.number().min(-10).max(20, 'Must be between -10% and 20%'),
   annualExpenseIncreaseRate: z.number().min(0).max(20, 'Must be between 0% and 20%'),
-  holdingPeriodYears: z.number().min(1).max(30, 'Must be between 1 and 30 years'),
 });

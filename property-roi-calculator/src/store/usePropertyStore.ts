@@ -247,12 +247,12 @@ export const usePropertyStore = create<PropertyStore>()(
           const projectedEquity: number[] = [];
           
           if (appreciation) {
-            let currentValue = contingency.afterRepairValue;
+            let currentValue = contingency.purchasePrice;
             let currentRent = state.analysis.rentOccupancy?.effectiveMonthlyRent || 0;
             let currentExpenses = state.analysis.operatingExpenses?.total || 0;
             let remainingLoan = mortgage.loanAmount || 0;
-            
-            for (let year = 1; year <= appreciation.holdingPeriodYears; year++) {
+            const holdingYears = 5;
+            for (let year = 1; year <= holdingYears; year++) {
               currentValue *= (1 + appreciation.annualAppreciationRate / 100);
               currentRent *= (1 + appreciation.annualRentGrowthRate / 100);
               currentExpenses *= (1 + appreciation.annualExpenseIncreaseRate / 100);

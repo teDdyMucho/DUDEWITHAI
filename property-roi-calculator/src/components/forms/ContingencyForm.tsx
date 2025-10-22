@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
- 
+
 import type { ContingencyPurchase } from '../../types/property';
 
 export const ContingencyForm: React.FC = () => {
@@ -14,7 +14,6 @@ export const ContingencyForm: React.FC = () => {
     defaultValues: analysis.contingency || {
       contingencyPercent: 5,
       purchasePrice: 450000,
-      afterRepairValue: 500000,
     }
   });
 
@@ -34,7 +33,7 @@ export const ContingencyForm: React.FC = () => {
           <CardDescription>Set purchase amounts and contingency</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Purchase Price</Label>
               <div className="relative">
@@ -47,13 +46,6 @@ export const ContingencyForm: React.FC = () => {
               <div className="relative">
                 <Input type="number" step="0.1" {...register('contingencyPercent', { valueAsNumber: true })} className="pr-10" />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">%</span>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label>After Repair Value (ARV)</Label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
-                <Input type="number" {...register('afterRepairValue', { valueAsNumber: true })} className="pl-8" />
               </div>
             </div>
           </div>

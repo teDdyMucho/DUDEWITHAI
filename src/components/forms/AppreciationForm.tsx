@@ -7,7 +7,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
-import { Calendar } from 'lucide-react';
 import type { AppreciationInputs } from '../../types/property';
 
 export const AppreciationForm: React.FC = () => {
@@ -18,7 +17,6 @@ export const AppreciationForm: React.FC = () => {
       annualAppreciationRate: 3,
       annualRentGrowthRate: 3,
       annualExpenseIncreaseRate: 2,
-      holdingPeriodYears: 5,
     }
   });
 
@@ -55,13 +53,6 @@ export const AppreciationForm: React.FC = () => {
               <div className="relative">
                 <Input type="number" step="0.1" {...register('annualExpenseIncreaseRate', { valueAsNumber: true })} className={errors.annualExpenseIncreaseRate ? 'pr-10 border-destructive' : 'pr-10'} />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">%</span>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label className="flex items-center gap-2"><Calendar className="w-4 h-4"/> Holding Period</Label>
-              <div className="relative">
-                <Input type="number" {...register('holdingPeriodYears', { valueAsNumber: true })} className={errors.holdingPeriodYears ? 'pr-14 border-destructive' : 'pr-14'} />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">years</span>
               </div>
             </div>
           </div>

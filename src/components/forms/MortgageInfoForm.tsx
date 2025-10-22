@@ -118,27 +118,6 @@ export const MortgageInfoForm: React.FC = () => {
                 <p className="text-sm text-destructive">{errors.loanTermYears.message}</p>
               )}
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="downPaymentPercent" className="flex items-center gap-2">
-                <DollarSign className="w-4 h-4" />
-                Down Payment
-              </Label>
-              <div className="relative">
-                <Input
-                  id="downPaymentPercent"
-                  type="number"
-                  step="0.1"
-                  {...register('downPaymentPercent', { valueAsNumber: true })}
-                  placeholder="20"
-                  className={errors.downPaymentPercent ? 'border-destructive pr-8' : 'pr-8'}
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">%</span>
-              </div>
-              {errors.downPaymentPercent && (
-                <p className="text-sm text-destructive">{errors.downPaymentPercent.message}</p>
-              )}
-            </div>
           </div>
 
           {/* Calculated Values Display */}
@@ -148,12 +127,6 @@ export const MortgageInfoForm: React.FC = () => {
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Purchase Price:</span>
                 <span className="font-medium">${purchasePrice.toLocaleString()}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Down Payment Amount:</span>
-                <span className="font-medium">
-                  ${(purchasePrice * (watchedValues.downPaymentPercent || 0) / 100).toLocaleString()}
-                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Loan Amount:</span>
